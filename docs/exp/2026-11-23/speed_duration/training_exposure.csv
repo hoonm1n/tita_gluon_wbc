@@ -1,0 +1,7 @@
+label,turn_fraction,long_turn_fraction,args_log,metrics_log,training_result
+E_42,0.14947104454040527,0.0,../tita_mjlab_163957_752553_args.json,../tita_mjlab_163957_752553_metrics.jsonl,../tita_mjlab_163957_752553_result.json
+H_42,0.1497880518436432,0.04916081577539444,../tita_mjlab_164816_953175_args.json,../tita_mjlab_164816_953175_metrics.jsonl,../tita_mjlab_164816_953175_result.json
+E_43,0.15194959938526154,0.0,../tita_mjlab_165656_233863_args.json,../tita_mjlab_165656_233863_metrics.jsonl,../tita_mjlab_165656_233863_result.json
+H_43,0.1478499472141266,0.0484260730445385,../tita_mjlab_170543_437648_args.json,../tita_mjlab_170543_437648_metrics.jsonl,../tita_mjlab_170543_437648_result.json
+E_44,0.1488507241010666,0.0,../tita_mjlab_171424_429865_args.json,../tita_mjlab_171424_429865_metrics.jsonl,../tita_mjlab_171424_429865_result.json
+H_44,0.14655424654483795,0.048039793968200684,../tita_mjlab_172252_037885_args.json,../tita_mjlab_172252_037885_metrics.jsonl,../tita_mjlab_172252_037885_result.json

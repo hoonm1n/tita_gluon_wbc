@@ -175,3 +175,21 @@ def test_native_observations_metrics_resampling_and_partial_reset():
             assert torch.isfinite(obs).all() and torch.isfinite(replay).all() and torch.isfinite(reward).all()
     finally:
         env.close()
+
+
+def test_speed_tracking_mixture_and_partial_resampling():
+    torch.manual_seed(42)
+    count = 100_000
+    cfg = mdp.VelocityCommandCfg(resampling_time_range=(6., 8.), speed_tracking_mix=True)
+    command = cfg.build(SimpleNamespace(num_envs=count + 1, device="cpu"))
+    command.target[-1] = 7.
+    command._resample_command(torch.arange(count))
+    vx, vy, wz = command.target[:-1].T
+    straight, turn = (vx != 0) & (wz == 0), (vx == 0) & (wz != 0)
+    fractions = torch.stack([group.float().mean() for group in
+                             ((vx == 0) & (wz == 0), straight, turn, (vx != 0) & (wz != 0))])
+    torch.testing.assert_close(fractions, torch.tensor([.10, .15, .15, .60]), atol=.006, rtol=0)
+    assert (command.target[-1] == 7.).all() and (vy == 0.).all()
+    for values, low, high in ((vx[straight], 1., 1.5), (wz[turn], .4, 1.6)):
+        assert ((values.abs() >= low) & (values.abs() <= high)).all()
+        assert .48 < (values > 0).float().mean() < .52

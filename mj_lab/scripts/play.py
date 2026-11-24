@@ -75,6 +75,7 @@ def main():
         v.lin_vel_x = v.lin_vel_y = v.ang_vel_z = (0., 0.)
     if args.command:
         v = cfg.commands["base_velocity"]
+        v.speed_tracking_mix = False
         for key, value in zip(("lin_vel_x", "lin_vel_y", "ang_vel_z"), args.command):
             if not getattr(v, key)[0] <= value <= getattr(v, key)[1]:
                 parser.error(f"{key} outside saved command range")

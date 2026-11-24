@@ -37,7 +37,11 @@ def main():
     parser.set_defaults(task="inline")
     parser.add_argument('--standing-height-only', action='store_true',
                         help='Fresh sit_stand run: keep 0.25–0.5 m goals and base/knee contact termination throughout')
+    parser.add_argument('--speed-ablation', choices=('A', 'B', 'C', 'D'),
+                        help='Warm-start the flat pose task with control, command mix, precise reward, or both')
     args = parser.parse_args()
+    if args.speed_ablation and (args.task != 'flat_roll_pitch_height' or not args.warm_start):
+        parser.error('--speed-ablation requires --task flat_roll_pitch_height and --warm_start')
     tasks = {"flat": TitaFlatEnvCfg, "flat_roll_pitch_height": TitaFlatRollPitchHeightEnvCfg,
              "sit_stand": TitaSitStandEnvCfg, "height_only": TitaHeightOnlyEnvCfg,
              "walk": TitaWalkEnvCfg, "inline": TitaInlineEnvCfg,
@@ -85,6 +89,10 @@ def main():
         cfg = tasks[args.task](args.num_envs)
         if args.standing_height_only:
             cfg.curriculum_transition_step = None
+    if args.speed_ablation in ('B', 'D'):
+        cfg.commands["base_velocity"].speed_tracking_mix = True
+    if args.speed_ablation in ('C', 'D'):
+        cfg.rewards["track_lin_vel_xy_exp_3"].weight = 1.0
     cfg.seed = args.seed
     # Old sit_stand checkpoints lack this schedule and retain their saved MDP.
     curriculum = cfg.set_training_step if "curriculum_transition_step" in vars(cfg) else None

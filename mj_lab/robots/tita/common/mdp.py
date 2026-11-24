@@ -35,6 +35,7 @@ class VelocityCommandCfg(CommandTermCfg):
     ang_vel_z: tuple[float, float] = (-3.0, 3.0)
     rel_standing_envs: float = 0.1
     rel_straight_envs: float = 0.0
+    speed_tracking_mix: bool = False
     ramp_rate: float = 0.0
     initial_phase_time: float = 0.0
     sensor_bias: bool = True
@@ -101,7 +102,20 @@ class VelocityCommand(CommandTerm):
     def _resample_command(self, env_ids):
         for i, bounds in enumerate((self.cfg.lin_vel_x, self.cfg.lin_vel_y, self.cfg.ang_vel_z)):
             self.target[env_ids, i] = torch.empty(len(env_ids), device=self.device).uniform_(*bounds)
-        standing = torch.rand(len(env_ids), device=self.device) < self.cfg.rel_standing_envs
+        draw = torch.rand(len(env_ids), device=self.device)
+        if self.cfg.speed_tracking_mix:
+            fast = env_ids[(draw >= .10) & (draw < .25)]
+            turn = env_ids[(draw >= .25) & (draw < .40)]
+            # The symmetric uniform samples supply both sign and uniform magnitude.
+            for ids, axis, low, high, bound in ((fast, 0, 1., 1.5, self.cfg.lin_vel_x[1]),
+                                                 (turn, 2, .4, 1.6, self.cfg.ang_vel_z[1])):
+                sample = self.target[ids, axis]
+                magnitude = low + (high - low) * sample.abs() / bound
+                self.target[ids] = 0.
+                self.target[ids, axis] = torch.copysign(magnitude, sample)
+            self.target[env_ids[draw < .10]] = 0.
+            return
+        standing = draw < self.cfg.rel_standing_envs
         straight = env_ids < round(self.num_envs * self.cfg.rel_straight_envs)
         standing &= ~straight
         self.target[env_ids[straight], 1:] = 0.0

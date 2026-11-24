@@ -1,0 +1,9 @@
+run,active_fraction,moving_ticks,request_peak_nm,filter_peak_nm,all_joint_torque_rms_nm,saturation_fraction
+residual_height_off,0.0,0,0.0,0.0,10.960765343214586,0.0
+residual_height_on,1.0,0,6.7975893,6.469985,9.667673158905933,0.0
+residual_roll_off,0.0,0,0.0,0.0,10.991176091949924,0.0
+residual_roll_on,1.0,0,6.7804823,6.511406,9.9392844118253,0.0
+residual_stop_drive_stop_off,0.0,4000,0.0,0.0,11.342479051297241,0.0
+residual_stop_drive_stop_on,0.7777777777777778,4000,6.8071837,6.4777923,10.49327972515607,0.0
+residual_stop_short_off,0.0,0,0.0,0.0,10.976434422636695,0.0
+residual_stop_short_on,1.0,0,6.8071837,6.4777923,9.779031565118542,0.0

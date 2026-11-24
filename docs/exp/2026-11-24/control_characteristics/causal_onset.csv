@@ -1,0 +1,11 @@
+case,signal,threshold,first_divergence_s,first_tick_delta,peak_delta
+turn_left_impratio1,actor_gain_output,1e-05,0.019999999999999574,0.0,0.6453539
+turn_left_impratio1,joint_target,1e-05,0.019999999999999574,0.0,0.8762312
+turn_left_impratio1,wheel_normal_load,0.001,0.0,0.5597157922723,17.3213873220932
+turn_left_impratio1,joint_torque,0.0001,0.004999999999999893,0.0,12.131034851074219
+turn_left_impratio1,post_step_base_vx,1e-05,0.019999999999999574,1.1025011530912954e-05,0.09536196560300322
+turn_left_impratio10,actor_gain_output,1e-05,0.019999999999999574,0.0,0.2802131
+turn_left_impratio10,joint_target,1e-05,0.019999999999999574,0.0,0.52081895
+turn_left_impratio10,wheel_normal_load,0.001,0.0,0.05195053992804333,30.730996874372963
+turn_left_impratio10,joint_torque,0.0001,0.004999999999999893,0.0,6.445918083190918
+turn_left_impratio10,post_step_base_vx,1e-05,0.3999999999999915,1.0400975428426218e-06,0.025911466565316968
